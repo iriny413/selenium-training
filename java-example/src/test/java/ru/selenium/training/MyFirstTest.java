@@ -36,7 +36,7 @@ public class MyFirstTest {
         driver.findElement(By.name("q")).sendKeys("webdriver");
         driver.findElement(By.name("btnK")).click();
         System.out.println(driver.getTitle());
-        //String text = "webdriver - Поиск в Google";
+        //String text = "webdriver - Поиск в Google1";
         String text = "webdriver - Google Search";
         wait.until(titleIs(text));
     }
