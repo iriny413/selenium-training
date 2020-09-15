@@ -12,3 +12,13 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+java-example/build.gradle
+java-example/build/
+java-example/gradle/
+java-example/gradlew
+java-example/gradlew.bat
+java-example/settings.gradle
+.idea/
+*.iml
+/Selenium/src/test/java/xMaths.java
