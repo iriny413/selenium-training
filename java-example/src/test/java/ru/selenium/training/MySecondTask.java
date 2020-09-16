@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
- * Created by i. khvichiya on 16.09.2020
+ * Created by irina khvichiya on 16.09.2020
  */
 public class MySecondTask {
     private WebDriver driver;
