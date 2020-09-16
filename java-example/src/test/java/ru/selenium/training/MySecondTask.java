@@ -9,11 +9,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
  * Created by irina khvichiya on 16.09.2020
+ *
+ * Задание 2. Запуск и открытие нескольких страниц браузера
+ * Создание теста, который просто запускает браузер, открывает несколько
+ * любых страниц и закрывает браузер.
  */
 public class MySecondTask {
     private WebDriver driver;
