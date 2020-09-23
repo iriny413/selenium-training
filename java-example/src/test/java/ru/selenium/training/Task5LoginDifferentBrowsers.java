@@ -27,10 +27,7 @@ public class Task5LoginDifferentBrowsers {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    @Test
-    public void LoginAdminPage_Chrome(){
-        //System.setProperty("webdriver.chrome.driver", "C:\\workspace\\chromedriver.exe");
-        driver = new ChromeDriver();
+    public void login(){
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
@@ -58,54 +55,23 @@ public class Task5LoginDifferentBrowsers {
     }
 
     @Test
+    public void LoginAdminPage_Chrome(){
+        //System.setProperty("webdriver.chrome.driver", "C:\\workspace\\chromedriver.exe");
+        driver = new ChromeDriver();
+        login();
+    }
+
+    @Test
     public void LoginAdminPage_FF(){
 //        System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckodriver.exe");
         driver = new FirefoxDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        driver.get("http://localhost/litecart/");
-        System.out.println(driver.getTitle());
-        String text1 = "My Store | Online Store";
-        wait.until(titleIs(text1));
-        driver.findElement(By.xpath("//a[@class='dropdown-toggle']//i[@class='fa fa-user']")).click();
-        driver.findElement(By.name("email")).sendKeys("kubik-rub@rambler.ru");
-        driver.findElement(By.name("password")).sendKeys("admin");
-        driver.findElement(By.xpath("//ul[@class='dropdown-menu']//button[@class='btn btn-default']")).click();
-        System.out.println(driver.getTitle());
-        String text2 = "My Store | Online Store";
-        wait.until(titleIs(text1));
-        driver.findElement(By.xpath("//div[contains(text(),' You are now logged in as Irina Khv.')]"));
-        System.out.println("I'm logged in as admin!");
-        driver.findElement(By.xpath("//a[@class='dropdown-toggle']//i[@class='fa fa-user']")).click();
-        driver.findElement(By.xpath("//ul[@class='dropdown-menu']//a[contains(text(),'Logout')]")).click();
-        driver.findElement(By.xpath("//div[contains(text(),' You are now logged out.')]"));
-        System.out.println("I've signed out.");
+        login();
     }
     @Test
     public void LoginAdminPage_IE(){
         //System.setProperty("webdriver.internetExplorer.driver", "C:\\workspace\\IEDriverServer.exe");
         driver = new InternetExplorerDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        driver.get("http://localhost/litecart/");
-        System.out.println(driver.getTitle());
-        String text1 = "My Store | Online Store";
-        wait.until(titleIs(text1));
-        driver.findElement(By.xpath("//a[@class='dropdown-toggle']//i[@class='fa fa-user']")).click();
-        driver.findElement(By.name("email")).sendKeys("kubik-rub@rambler.ru");
-        driver.findElement(By.name("password")).sendKeys("admin");
-        driver.findElement(By.xpath("//ul[@class='dropdown-menu']//button[@class='btn btn-default']")).click();
-        System.out.println(driver.getTitle());
-        String text2 = "My Store | Online Store";
-        wait.until(titleIs(text1));
-        driver.findElement(By.xpath("//div[contains(text(),' You are now logged in as Irina Khv.')]"));
-        System.out.println("I'm logged in as admin!");
-        driver.findElement(By.xpath("//a[@class='dropdown-toggle']//i[@class='fa fa-user']")).click();
-        driver.findElement(By.xpath("//ul[@class='dropdown-menu']//a[contains(text(),'Logout')]")).click();
-        driver.findElement(By.xpath("//div[contains(text(),' You are now logged out.')]"));
-        System.out.println("I've signed out.");
+        login();
     }
 
     @After
