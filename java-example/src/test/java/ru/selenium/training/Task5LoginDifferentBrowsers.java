@@ -5,9 +5,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +32,7 @@ public class Task5LoginDifferentBrowsers {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.get("http://localhost/litecart/");
+        driver.get("http://localhost:8090/litecart/");
         System.out.println(driver.getTitle());
         String text1 = "My Store | Online Store";
         wait.until(titleIs(text1));
@@ -64,13 +65,13 @@ public class Task5LoginDifferentBrowsers {
     @Test
     public void LoginAdminPage_FF(){
 //        System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckodriver.exe");
-        driver = new FirefoxDriver();
+//        driver = new FirefoxDriver();
         login();
     }
     @Test
     public void LoginAdminPage_IE(){
         //System.setProperty("webdriver.internetExplorer.driver", "C:\\workspace\\IEDriverServer.exe");
-        driver = new InternetExplorerDriver();
+//        driver = new InternetExplorerDriver();
         login();
     }
 
