@@ -5,8 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -41,27 +39,25 @@ public class Task7_waits {
     public void clickEveryLeftMenuOption() {
         loginToAdminPageAsAdmin();
         //Check that user is logged in on the right web page
-        if (isTitleCorrect("My Store")) {
-            //find all menu element on the left side & click
-            List<WebElement> rows = driver.findElements(By.xpath("//ul[@id='box-apps-menu']//li[@class='app']"));
-            for (WebElement row : rows) {
-                clickMainOption(row);
-                String foundTitle = driver.getTitle();
-                wait.until(titleIs(foundTitle));
-                System.out.println("Title is found: " + foundTitle);
-                if (isElementPresent("//li[@class='app selected']/ul[@class='docs']")) {
-                    List<WebElement> subrows = driver.findElements(By.xpath("//li[@class='app selected']/ul[@class='docs']//li"));
-                    for (WebElement subrow : subrows) {
-                        clickSubOption(subrow);
-                        String foundSubTitle = driver.getTitle();
-                        wait.until(titleIs(foundTitle));
-                        System.out.println("Subtitle is found: " + foundSubTitle);
-                    }
-                }
-            }
-            System.out.println("Main elements were clicked");
-        } else {
-            System.out.println("User is not logged in or a wrong page is opened");
+        List<WebElement> rows = driver.findElements(By.xpath("//ul[@id='box-apps-menu']//li[contains(@class,'app')]/a"));
+        final int initialSize = rows.size();
+        for (int i = 0; i < initialSize; i++) {
+            List<WebElement> rows2 = driver.findElements(By.xpath("//ul[@id='box-apps-menu']//li[contains(@class,'app')]/a"));
+//                clickMainOption(rows2.get(i));
+//                String foundTitle = driver.getTitle();
+//                wait.until(titleIs(foundTitle));
+            System.out.println("Title is found: " + rows2.get(i).getText());
+            rows2.get(i).click();
+            //     i = i +1;
+//                if (isElementPresent("//li[@class='app selected']/ul[@class='docs']")) {
+//                    List<WebElement> subrows = driver.findElements(By.xpath("//li[@class='app selected']/ul[@class='docs']//li"));
+//                    for (WebElement subrow : subrows) {
+//                        clickSubOption(subrow);
+//                        String foundSubTitle = driver.getTitle();
+//                        wait.until(titleIs(foundTitle));
+//                        System.out.println("Subtitle is found: " + foundSubTitle);
+//                    }
+//                }
         }
     }
 
@@ -87,21 +83,18 @@ public class Task7_waits {
     }
 
     public void clickMainOption(WebElement webElement) {
-        staleElementXpathRefresh(webElement);
-        driver.manage().timeouts().pageLoadTimeout(3,TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(3,TimeUnit.SECONDS);
+        String a = webElement.getText();
+        System.out.println("name of list " + a);
         try {
             webElement.click();
-//            waitForAjaxRequests();
         } catch (StaleElementReferenceException e) {
             System.out.println("StaleElementException appeared" + e);
         }
     }
 
     public void clickSubOption(WebElement webElement) {
-        staleElementXpathRefresh(webElement);
-        driver.manage().timeouts().setScriptTimeout(3,TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(3,TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(3, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(3, TimeUnit.SECONDS);
         try {
             webElement.click();
 //            waitForAjaxRequests();
@@ -116,109 +109,6 @@ public class Task7_waits {
         found = driver.findElements(By.xpath(xpath)).size() > 0;
         driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
         return found;
-    }
-
-    /**
-     * Check page status, wait until its in ready/complete state.
-     */
-    public void waitForPageToLoad() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        int timeWaitedInMilliseconds = 0;
-        int maxWaitTimeInMilliseconds = 2000;
-
-        while (timeWaitedInMilliseconds < maxWaitTimeInMilliseconds) {
-            //System.out.println(js.executeScript("return document.readyState"));
-            if (js.executeScript("return document.readyState").equals("interactive")) {
-                System.out.println("Waited interactive: " + timeWaitedInMilliseconds);
-                break;
-            }
-            waitElementsReload(100);
-            timeWaitedInMilliseconds += 100;
-        }
-
-        timeWaitedInMilliseconds = 0;
-        while (!js.executeScript("return document.readyState").equals("complete")) {
-            System.out.println("waiting !!!!");
-            waitElementsReload(500);
-            timeWaitedInMilliseconds += 500;
-            if (timeWaitedInMilliseconds == 10000) {
-                break;
-            }
-        }
-    }
-
-//    public void waitForAjaxRequests() {
-//        WebDriverWait webDriverWait = new WebDriverWait(driver, 30);
-//        webDriverWait.until(new ExpectedCondition<Boolean>() {
-//            public Boolean apply(WebDriver d) {
-//                JavascriptExecutor js = (JavascriptExecutor) d;
-//                Boolean readyState = (Boolean) js.executeScript("return document.readyState == 'complete'");
-//                Boolean requestsAreFinished = (Boolean) js.executeScript("return !!window.jQuery && window.jQuery.active == 0");
-//                Boolean blockedIsHidden = (Boolean) js.executeScript("return document.getElementsByClassName('uiPageBlockerJS').length < 1 || document.getElementsByClassName('uiPageBlockerJS')[0].getAttribute('style') == undefined || (document.getElementsByClassName('uiPageBlockerJS')[0].getAttribute('style') != undefined && !document.getElementsByClassName('uiPageBlockerJS')[0].getAttribute('style').includes('block'))");
-//                return requestsAreFinished && readyState && blockedIsHidden;
-//            }
-//        });
-//        waitToBeInvisible("//div[@class='uiPageBlockerJS']");
-//    }
-
-    /**
-     * Thread sleep
-     *
-     * @param ms time in milliseconds
-     */
-    protected void waitElementsReload(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (Exception e) {
-            System.out.println("Exception!" + e);
-        }
-    }
-
-    /**
-     * Reinitialize webelement, get its xpath and find again
-     *
-     * @param webElement webelement
-     * @return webelement
-     */
-    protected WebElement staleElementXpathRefresh(WebElement webElement) {
-        WebElement webElementRefreshed = null;
-        int count = 0;
-        while (count < 4) {
-            try {
-                //get xpath of webelement
-                String xpath = xpathExtractor(webElement);
-                //find it again
-                webElementRefreshed = driver.findElement(By.xpath(xpath));
-            } catch (StaleElementReferenceException e) {
-                //logger.error("Stale element!");
-                count = count + 1;
-            }
-            count = count + 4;
-        }
-        return webElementRefreshed;
-    }
-
-    /**
-     * Returns element locator (xpath) from its annotation (@FindBy(....))
-     *
-     * @param webelement webelement
-     * @return locator
-     */
-    protected String xpathExtractor(WebElement webelement) {
-        try {
-            String myString = webelement.toString();
-            Pattern pattern = Pattern.compile("(//.*)");
-            Matcher matcher = pattern.matcher(myString);
-
-            if (matcher.find()) {
-                String matchedString = matcher.group();
-                return matchedString.substring(0, matchedString.length() - 1);
-            }
-        } catch (StaleElementReferenceException e) {
-            System.out.println("StaleElementReferenceException");
-        }
-
-        return null;
     }
 
     @After
