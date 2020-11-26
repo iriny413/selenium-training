@@ -22,6 +22,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
  * 2) прокликивает последовательно все пункты меню слева, включая вложенные пункты
  * 3) для каждой страницы проверяет наличие заголовка
  */
+
 public class Task7_waits {
     private WebDriver driver;
     private WebDriverWait wait;
@@ -52,7 +53,7 @@ public class Task7_waits {
         }
     }
 
-    public void clickEverySubOption() {
+    private void clickEverySubOption() {
         if (isElementPresent("//ul[@class='docs']")) {
             List<WebElement> subrows = wait.until(d -> d.findElements(By.xpath("//ul[@class='docs']//span[@class='name']")));
             final int initialSize2 = subrows.size();
@@ -68,7 +69,7 @@ public class Task7_waits {
     @FindBy(xpath = "//button[@class='btn btn-default']")
     private WebElement button_login;
 
-    public void loginToAdminPageAsAdmin() throws InterruptedException {
+    private void loginToAdminPageAsAdmin() throws InterruptedException {
         driver.get("http://localhost:8090/litecart/admin/");
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
