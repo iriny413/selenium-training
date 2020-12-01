@@ -45,6 +45,7 @@ public class Task8 extends CommonMethods {
             String countryName = rows1.get(i).getText();
             System.out.println("Country# " + i + " - " + countryName);
             names.add(countryName);
+            rows1.get(i).click();
             //check Geo zones
             checkGeoZones(i);
         }
