@@ -35,8 +35,9 @@ public class Task11 extends CommonMethods {
         WebElement s1_e3 = driver.findElement(s1_elem3);
         WebElement s1_e4 = driver.findElement(s1_elem4);
         WebElement s2_e2 = driver.findElement(s2_elem2);
-        new Actions(driver).moveToElement(s1_e2).dragAndDrop(s1_e2, s1_e4).perform();
-        new Actions(driver).moveToElement(s1_e3).dragAndDrop(s1_e3, s2_e2).perform();
+        action = new Actions(driver);
+        action.dragAndDrop(s1_e2, s1_e4).perform();
+        action.dragAndDrop(s1_e3, s2_e2).perform();
     }
 
     public void login() {
