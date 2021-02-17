@@ -3,11 +3,12 @@ package ru.selenium.training;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class CommonMethods {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    protected WebDriver driver;
+    protected WebDriverWait wait;
 
     public void loginToAdminPageAsAdmin(){
         driver.get("http://localhost:8090/litecart/admin/");

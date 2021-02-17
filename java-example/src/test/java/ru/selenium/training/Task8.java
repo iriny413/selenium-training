@@ -4,12 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,21 +16,21 @@ import static junit.framework.TestCase.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class Task8 extends CommonMethods {
-    private WebDriver driver;
-    private WebDriverWait wait;
+//    private WebDriver driver;
+//    private WebDriverWait wait;
 
     @Before
     public void start() {
         //System.setProperty("webdriver.chrome.driver", "C:\\workspace\\chromedriver.exe");
         driver = new ChromeDriver();
         //driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        //wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
 
     private final By countriesList = new By.ByXPath("//table[@class='table table-striped table-hover data-table']//td[5]/a");
-    private final By geoZonesList = new By.ByXPath("//table[@class='table table-striped table-hover data-table']/tbody/tr");
+    private final By geoZonesList = new By.ByXPath("//table[@class='table table-striped table-hover data-table']//td[5]/following-sibling::td[@class='text-center']");
 
     @Test
     public void checkCountriesSorting() {
@@ -41,28 +38,50 @@ public class Task8 extends CommonMethods {
         loginToAdminPageAsAdmin();
         //open page 'Countries'
         assertTrue(openPage("Countries"));
-        List<WebElement> rows = wait.until(d -> d.findElements(countriesList));
         ArrayList<String> names = new ArrayList<>();
+
+        findRows(countriesList);
+
+        List<WebElement> rows = wait.until(d -> d.findElements(countriesList));
         final int initialSize = rows.size();
         for (int i = 0; i < initialSize; i++) {
             List<WebElement> rows1 = wait.until(d -> d.findElements(countriesList));
             String countryName = rows1.get(i).getAttribute("textContent");
             System.out.println("Country# " + i + " - " + countryName);
+
             names.add(countryName);
 
             //check # of geo zones for a country
-            //String geoZoneNumber = driver.findElement(By.xpath("//table[@class='table table-striped table-hover data-table']//td[contains(.,'"+ countryName.replace("'","\\'") +"')]/following-sibling::td[@class='text-center']")).getAttribute("textContent");
-            String geoZoneNumber = driver.findElement(By.xpath("//table[@class='table table-striped table-hover data-table']//td[contains(.,'" + countryName + "')]/following-sibling::td[@class='text-center']")).getAttribute("textContent");
-            if (!geoZoneNumber.equals("0")) {
-                System.out.println("Number of geozones for " + countryName + "is " + geoZoneNumber);
-                rows1.get(i).click();
-                checkGeoZones(i, geoZonesList);
-                //sort geoZones alphabetically
-                //sortElements(names);
+            List<WebElement> rows2 = wait.until(d -> d.findElements(geoZonesList));
+            final int initialSize2 = rows2.size();
+            for (int j = 0; j < initialSize2; j++) {
+                List<WebElement> rows3 = wait.until(d -> d.findElements(countriesList));
+                int geoZoneNumber = Integer.parseInt(rows3.get(j).getAttribute("textContent"));
+
+                if (geoZoneNumber != 0 ) {
+                    System.out.println("Number of geozones for " + countryName + "is " + geoZoneNumber);
+                    rows1.get(i).click();
+                    checkGeoZones(i, geoZonesList);
+                    //sort geoZones alphabetically
+                    //sortElements(names);
+                }
             }
         }
         //sort countries alphabetically
         //sortElements(names);
+    }
+
+    public ArrayList<String> findRows(By xpathQuery) {
+        ArrayList<String> names = new ArrayList<>();
+        List<WebElement> rows = wait.until(d -> d.findElements(xpathQuery));
+        final int initialSize = rows.size();
+        for (int i = 0; i < initialSize; i++) {
+            List<WebElement> rows1 = wait.until(d -> d.findElements(xpathQuery));
+            String name = rows1.get(i).getAttribute("textContent");
+            System.out.println("Name# " + i + " - " + name);
+            names.add(name);
+        }
+        return names;
     }
 
     public int sortElements(ArrayList<String> names) {
@@ -81,19 +100,6 @@ public class Task8 extends CommonMethods {
     public void checkGeoZones(int countryIndex, By xpath) {
         findRows(xpath);
         assertTrue(openPage("Countries"));
-    }
-
-    public void findRows(By xpath) {
-        ArrayList<String> names = new ArrayList<>();
-        List<WebElement> rows = wait.until(d -> d.findElements(xpath));
-        final int initialSize = rows.size();
-        System.out.println("Number of elements is " + rows.size());
-        for (int j = 0; j < initialSize; j++) {
-            List<WebElement> rows1 = wait.until(d -> d.findElements(xpath));
-            String name = rows1.get(j).getAttribute("textContext");
-            System.out.println("Name # " + j + " - " + name);
-            names.add(name);
-        }
     }
 
     public void loginToAdminPageAsAdmin() {
