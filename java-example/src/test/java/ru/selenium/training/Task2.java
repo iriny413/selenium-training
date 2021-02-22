@@ -18,7 +18,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
  * Создание теста, который просто запускает браузер, открывает несколько
  * любых страниц и закрывает браузер.
  */
-public class MySecondTask {
+public class Task2 {
     private WebDriver driver;
     private WebDriverWait wait;
 
